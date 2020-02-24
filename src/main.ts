@@ -1,7 +1,7 @@
 import {HospitalGetter} from './hospital-getter';
 require('dotenv').config();
 
-interface MyObj {
+interface Hospital {
   name: string,
   parse_source: string,
   address: string,
