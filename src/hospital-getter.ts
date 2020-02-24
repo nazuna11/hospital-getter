@@ -1,5 +1,15 @@
 import { Client } from 'pg';
 
+export interface Hospital {
+  name: string,
+  parse_source: string,
+  address: string,
+  tell: string,
+  lon: number,
+  lat: number,
+  homepage: string
+}
+
 export class HospitalGetter{
   private client!: Client;
 
