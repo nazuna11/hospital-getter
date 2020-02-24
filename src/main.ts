@@ -19,15 +19,25 @@ let dbPassword: string = process.env.PASSWORD || '';
 let dbDatabase: string = process.env.DATABASE || '';
 
 function getHospital(): Promise<Hospital[]>{
-  hg.connect(db_host, db_user, db_password, db_database);
+  hg.connect(dbHost, dbUser, dbPassword, dbDatabase);
   const query: string = 'SELECT * FROM '+process.env.SCHEMA+'.'+process.env.TABLE;
   const rows = hg.query(query);
   return rows;
   // rows.then(function(resolve:Hospital[]) {return resolve});
 }
 
-// let rows = getHospital()
-// rows.then(function(resolve:Hospital[]) {console.log(resolve[0].name)});
+function getNearHospital(lon: number, lat: number, dist: number): Promise<Hospital[]>{
+  hg.connect(dbHost, dbUser, dbPassword, dbDatabase);
+  const query: string = 'SELECT * FROM '+process.env.SCHEMA+'.'+process.env.TABLE +' WHERE st_distance(st_point(lon, lat)::geography, st_point('+lon+','+lat+')::geography) < '+dist+';'
+  const rows = hg.query(query);
+  return rows;
+  // rows.then(function(resolve:Hospital[]) {return resolve});
+}
+
+let nowlon = 139.3374233
+let nowlat = 35.7110031
+let rows = getNearHospital(nowlon, nowlat, 600.0);
+rows.then(function(resolve:Hospital[]) {console.log(resolve[0])});
 /*
 var client = new Client({
     user: process.env.USER,
