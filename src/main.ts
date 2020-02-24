@@ -13,15 +13,21 @@ interface Hospital {
 
 const hg = new HospitalGetter();
 
-let db_host: string = process.env.DB_HOST || '';
-let db_user: string = process.env.USER || '';
-let db_password: string = process.env.PASSWORD || '';
-let db_database: string = process.env.DATABASE || '';
+let dbHost: string = process.env.DB_HOST || '';
+let dbUser: string = process.env.USER || '';
+let dbPassword: string = process.env.PASSWORD || '';
+let dbDatabase: string = process.env.DATABASE || '';
 
-hg.connect(db_host, db_user, db_password, db_database);
-const query: string = 'SELECT * FROM '+process.env.SCHEMA+'.'+process.env.TABLE;
-const rows = hg.query(query);
-rows.then(function(resolve:MyObj[]) {console.log(resolve[0].name)});
+function getHospital(): Promise<Hospital[]>{
+  hg.connect(db_host, db_user, db_password, db_database);
+  const query: string = 'SELECT * FROM '+process.env.SCHEMA+'.'+process.env.TABLE;
+  const rows = hg.query(query);
+  return rows;
+  // rows.then(function(resolve:Hospital[]) {return resolve});
+}
+
+// let rows = getHospital()
+// rows.then(function(resolve:Hospital[]) {console.log(resolve[0].name)});
 /*
 var client = new Client({
     user: process.env.USER,
