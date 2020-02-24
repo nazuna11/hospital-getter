@@ -27,6 +27,19 @@ export class HospitalGetter{
     return (await this.client.query(query, parameters)).rows;
   }
 
+  public getHospital(): Promise<Hospital[]>{
+    const query: string = 'SELECT * FROM '+process.env.SCHEMA+'.'+process.env.TABLE;
+    const rows = this.query(query);
+    return rows;
+    // rows.then(function(resolve:Hospital[]) {return resolve});
+  }
+
+  public getNearHospital(lon: number, lat: number, dist: number): Promise<Hospital[]>{
+    const query: string = 'SELECT * FROM '+process.env.SCHEMA+'.'+process.env.TABLE +' WHERE st_distance(st_point(lon, lat)::geography, st_point('+lon+','+lat+')::geography) < '+dist+';'
+    const rows = this.query(query);
+    return rows;
+  }
+
   public async end(){
     await this.client.end();
   }
