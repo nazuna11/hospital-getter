@@ -21,8 +21,6 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
     res.statusCode = 400;
     res.end('bad');
   }else{
-    var nowlon = 139.3374233
-    var nowlat = 35.7110031
     var default_radius = 600.0
     var res2 = res;
     var qstr:string;
